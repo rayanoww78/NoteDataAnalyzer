@@ -12,16 +12,16 @@ from email.mime.text import MIMEText
 
 EMAIL_HOST = "mail.uphf.fr"
 EMAIL_PORT = 993
-EMAIL_USER = "120486@uphf.fr"
-EMAIL_PASS = "RAYANOWWDu5452322245$"
+EMAIL_USER = "TON_MAIL_UPHF"
+EMAIL_PASS = "TON_PROPRE_MDP"
 
 
 SMTP_HOST = "smtp.uphf.fr"
 SMTP_PORT = 587
-SEND_TO = "elamjadrayan@gmail.com"
+SEND_TO = "EMAIL_RECEPTION"
 
 
-SAVE_FOLDER = r"C:\Users\elamj\PycharmProjects\RelevéNote\MesNotes2"
+SAVE_FOLDER = r"CHEMIN_TELECHARGEMENTS_PDF_NOTES"
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 
@@ -81,7 +81,7 @@ def extract_notes_from_pdf(pdf_path):
         if ue_note <= 20:
             data.append({"Fichier": filename, "Date": date, "Type": "UE", "Nom": ue_name.strip(), "Note": ue_note})
 
-    # 🔍 Trouver les matières
+   
     for matiere_name, matiere_note in matieres_pattern.findall(extracted_text):
         matiere_note = float(matiere_note)
         if matiere_note <= 20:
@@ -179,7 +179,7 @@ def send_email_with_report(csv_path, graph_path_ue, graph_path_matiere, recipien
     """Envoie un rapport par email avec les fichiers CSV et graphiques en pièce jointe."""
 
 
-    GMAIL_USER = "elamjadrayan@gmail.com"
+    GMAIL_USER = "EMAIL_D'ENVOIE"
     GMAIL_PASS = "bqkw urbp ifxz bhrr"  #
     SEND_TO = recipient_email
 
