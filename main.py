@@ -25,7 +25,7 @@ SAVE_FOLDER = r"CHEMIN_TELECHARGEMENTS_PDF_NOTES"
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 
-# 📥 Télécharger les relevés de notes (PDF) depuis Zimbra
+
 def download_pdfs_from_email():
     """Télécharge les PDFs des relevés de notes reçus par mail."""
     mail = imaplib.IMAP4_SSL(EMAIL_HOST, EMAIL_PORT)
@@ -47,7 +47,7 @@ def download_pdfs_from_email():
                 filepath = os.path.join(SAVE_FOLDER, filename)
                 with open(filepath, "wb") as f:
                     f.write(part.get_payload(decode=True))
-                print(f"📥 Fichier téléchargé : {filename}")
+                print(f"Fichier téléchargé : {filename}")
 
     mail.logout()
 
@@ -96,7 +96,7 @@ def process_all_pdfs_in_folder(folder_path):
 
 
     if not os.path.exists(folder_path):
-        print("🚨 Le dossier spécifié n'existe pas !")
+        print("Le dossier spécifié n'existe pas !")
         return None
 
 
@@ -113,7 +113,7 @@ def process_all_pdfs_in_folder(folder_path):
     df = df[df['Note'] <= 20]
 
     if df.empty:
-        print("⚠️ Aucun relevé de notes valide trouvé.")
+        print("Aucun relevé de notes valide trouvé.")
         return None
 
 
@@ -136,7 +136,7 @@ def plot_grades_by_ue(df):
 
     plt.xlabel("Date")
     plt.ylabel("Moyenne par UE")
-    plt.title("📊 Évolution des moyennes par UE")
+    plt.title("Évolution des moyennes par UE")
     plt.xticks(rotation=45)
     plt.legend()
     plt.grid()
@@ -160,7 +160,7 @@ def plot_grades_by_matiere(df):
 
     plt.xlabel("Date")
     plt.ylabel("Moyenne par Matière")
-    plt.title("📊 Évolution des moyennes par Matière")
+    plt.title("Évolution des moyennes par Matière")
     plt.xticks(rotation=45)
     plt.legend()
     plt.grid()
@@ -180,7 +180,7 @@ def send_email_with_report(csv_path, graph_path_ue, graph_path_matiere, recipien
 
 
     GMAIL_USER = "EMAIL_D'ENVOIE"
-    GMAIL_PASS = "bqkw urbp ifxz bhrr"  #
+    GMAIL_PASS = "bqkw urbp ifxz bhrr" 
     SEND_TO = recipient_email
 
     SMTP_HOST = "smtp.gmail.com"
@@ -190,10 +190,10 @@ def send_email_with_report(csv_path, graph_path_ue, graph_path_matiere, recipien
     msg = MIMEMultipart()
     msg["From"] = GMAIL_USER
     msg["To"] = SEND_TO
-    msg["Subject"] = "📊 Rapport d'évolution des notes"
+    msg["Subject"] = "Rapport d'évolution des notes"
 
 
-    body = "Bonjour,\n\nVoici l'évolution de tes notes au fil de ton semestre en pièce jointe ! 📈\n\nBonne analyse !"
+    body = "Bonjour,\n\nVoici l'évolution de tes notes au fil de ton semestre en pièce jointe ! \n\nBonne analyse !"
     msg.attach(MIMEText(body, "plain"))
 
 
@@ -219,27 +219,28 @@ def send_email_with_report(csv_path, graph_path_ue, graph_path_matiere, recipien
         server.login(GMAIL_USER, GMAIL_PASS)
         server.sendmail(GMAIL_USER, SEND_TO, msg.as_string())
         server.quit()
-        print("✅ Rapport envoyé par email !")
+        print("Rapport envoyé par email !")
     except Exception as e:
-        print(f"❌ Erreur lors de l'envoi de l'email : {e}")
+        print(f"Erreur lors de l'envoi de l'email : {e}")
 
 
-print("📨 Récupération des relevés de notes...")
+print("Récupération des relevés de notes...")
 download_pdfs_from_email()
 
-print("📊 Extraction des notes...")
+print("Extraction des notes...")
 df_notes = process_all_pdfs_in_folder(SAVE_FOLDER)
 
 if df_notes is not None:
     csv_path = "relevés_notes.csv"
     df_notes.to_csv(csv_path, index=False)
-    print(f"📂 Notes sauvegardées dans {csv_path}")
+    print(f"Notes sauvegardées dans {csv_path}")
 
-    print("📈 Génération des graphes...")
+    print("Génération des graphes...")
     graph_path_ue = plot_grades_by_ue(df_notes)
     graph_path_matiere = plot_grades_by_matiere(df_notes)
 
-    print("📤 Envoi du rapport par email...")
+    print("Envoi du rapport par email...")
     send_email_with_report(csv_path, graph_path_ue, graph_path_matiere,"elamjadrayan@gmail.com")
 else:
-    print("⚠️ Aucune donnée à traiter.")
+    print("Aucune donnée à traiter.")
+
